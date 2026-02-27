@@ -1,81 +1,54 @@
-# 🛒 E-commerce Backend API
+# TechShop API (Django + DRF)
 
-> A RESTful backend API for an e-commerce platform, built as part of the
-> ALX Capstone Project. The API provides user authentication, product
-> management, cart functionality, and order processing.
+A small e-commerce backend API for electronics/tech products.
 
----
+## Features
+- Categories + Products
+- Product search, sorting, and filters
+- Create Orders (with order items, totals, stock reduction)
+- CORS ready for React dev server
 
-## 📌 Features
+## Setup
 
-- User registration and authentication (JWT)
-- Role-based access (admin / user)
-- CRUD operations for products
-- Shopping cart functionality
-- Order creation and order history
-- Input validation and error handling
+```bash
+cd backend
+python -m venv .venv
+# Windows: .venv\Scripts\activate
+# macOS/Linux: source .venv/bin/activate
 
----
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py seed
+python manage.py createsuperuser
+python manage.py runserver
+```
 
-## 🛠️ Tech Stack
+API base: `http://127.0.0.1:8000/api`
 
-- Node.js
-- Express.js
-- MongoDB (or your DB)
-- JWT Authentication
+## Endpoints
+- GET `/api/health/`
+- GET `/api/categories/`
+- GET `/api/products/?search=mouse&ordering=price&category=phones&in_stock=true&min_price=1000&max_price=50000`
+- GET `/api/products/<id>/`
+- POST `/api/orders/`
+- GET `/api/orders/<id>/`
 
----
+### Create Order payload (example)
+```json
+{
+  "full_name": "Ashraf Ahmed",
+  "email": "ashraf@example.com",
+  "phone": "01000000000",
+  "address_line1": "12 Example St",
+  "address_line2": "",
+  "city": "Alexandria",
+  "country": "Egypt",
+  "postal_code": "21500",
+  "items": [
+    {"product_id": 1, "quantity": 2},
+    {"product_id": 3, "quantity": 1}
+  ]
+}
+```
 
-## 📂 Project Structure
-
-src/ ├── controllers/ ├── routes/ ├── models/ ├── middlewares/ ├──
-config/ ├── app.js └── server.js
-
----
-
-## ⚙️ Getting Started
-
-### 1. Clone the repository
-
-git clone https://github.com/your-username/ecommerce-backend.git
-
-### 2. Install dependencies
-
-cd ecommerce-backend npm install
-
-### 3. Create environment variables
-
-Create a `.env` file:
-
-PORT=5000\
-DATABASE_URL=your_database_connection_string\
-JWT_SECRET=your_secret_key
-
-### 4. Start the server
-
-npm run dev
-
-Server runs at: http://localhost:5000
-
----
-
-## 🔐 Sample API Endpoints
-
-Auth: - POST /api/auth/register - POST /api/auth/login
-
-Products: - GET /api/products - POST /api/products (admin)
-
-Orders: - POST /api/orders - GET /api/orders/my
-
----
-
-## 🧪 Testing
-
-- Tested using Postman
-- Verified protected routes and validation
-
----
-
-## 📄 License
-
-Educational project for ALX Capstone.
+Shipping rule (demo): free shipping over 2000 EGP, else 75 EGP.
